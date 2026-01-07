@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RON SADI // DOOR2VERSE</title>
+    <style>
+        :root { --bg: #050505; --fg: #f2f2f2; --accent: #ff0000; --dim: #1a1a1a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body, html { background: var(--bg); color: var(--fg); font-family: 'Helvetica Bold', sans-serif; overflow-x: hidden; scroll-behavior: smooth; text-transform: uppercase; line-height: 0.85; }
+
+        /* THE SCANLINE ENGINE */
+        .crt::before { content: " "; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Noisy_Texture.png'); opacity: 0.12; z-index: 10000; pointer-events: none; mix-blend-mode: overlay; }
+        .crt::after { content: " "; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%); background-size: 100% 3px; z-index: 10001; pointer-events: none; }
+
+        /* WIZARD CURSOR */
+        #cursor { width: 12px; height: 12px; background: var(--accent); position: fixed; pointer-events: none; z-index: 99999; border-radius: 50%; box-shadow: 0 0 15px var(--accent); mix-blend-mode: difference; transition: transform 0.05s ease; }
+
+        /* HERO AREA */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; border-bottom: 2px solid #111; }
+        .hero-vid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.18; filter: grayscale(1) contrast(180%); }
+        .hero-h1 { font-size: 15vw; letter-spacing: -1.2vw; z-index: 10; font-weight: 900; }
+        .hero-sub { z-index: 10; font-size: 0.7rem; letter-spacing: 0.8rem; margin-top: 25px; color: var(--dim); }
+
+        /* SECTIONS */
+        section { padding: 160px 8%; border-bottom: 1px solid var(--dim); }
+        .label { font-size: 0.6rem; color: var(--dim); margin-bottom: 50px; letter-spacing: 6px; display: block; }
+        .manifesto-lead { font-size: 4.8vw; margin-bottom: 100px; max-width: 1400px; line-height: 0.9; }
+
+        /* ARTIFACT GRID */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; }
+        .artifact { border: 1px solid var(--dim); background: #000; transition: 0.4s; overflow: hidden; position: relative; }
+        .artifact-info { padding: 40px; border-bottom: 1px solid var(--dim); }
+        .artifact p { font-size: 1.6rem; line-height: 1.1; }
+
+        .img-container { width: 100%; height: 600px; overflow: hidden; background: #000; }
+        .artifact video, .artifact img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            filter: grayscale(1) contrast(1.4) brightness(0.9);
+            transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .artifact:hover { border-color: var(--accent); }
+        .artifact:hover video, .artifact:hover img { filter: invert(1) grayscale(1) contrast(2); transform: scale(1.05); }
+
+        /* RAY TERMINAL (THE INTERACTIVE BOTTOM) */
+        .sonic-terminal { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; }
+        .ray-vid-container { position: relative; width: 500px; height: 500px; transition: 0.5s; border: 1px solid var(--dim); }
+        .ray-vid { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.5); transition: 0.5s; }
+        
+        /* RED LIGHT REFLECTION EFFECT */
+        .red-glow-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle at 50% 70%, rgba(255, 0, 0, 0.4) 0%, transparent 70%);
+            mix-blend-mode: color-dodge; opacity: 0; transition: 0.5s; pointer-events: none;
+        }
+
+        .is-active .ray-vid { filter: grayscale(0.5) contrast(1.2) sepia(1) hue-rotate(-50deg); }
+        .is-active .red-glow-overlay { opacity: 1; animation: flicker-light 0.15s infinite; }
+        .is-active .ray-vid-container { border-color: var(--accent); box-shadow: 0 0 100px rgba(255, 0, 0, 0.3); }
+
+        @keyframes flicker-light { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+
+        .logo-btn { font-size: 3rem; font-family: 'Arial Black', sans-serif; letter-spacing: -2px; margin-top: 40px; border: 1px solid var(--fg); padding: 10px 40px; }
+        .is-active .logo-btn { border-color: var(--accent); color: var(--accent); }
+
+        footer { padding: 80px 8%; display: flex; justify-content: space-between; font-size: 0.7rem; color: #1a1a1a; }
+    </style>
+</head>
+<body class="crt">
+    <div id="cursor"></div>
+
+    <!-- THE GATEWAY -->
+    <div class="hero" id="hero">
+        <video class="hero-vid" autoplay muted loop playsinline><source src="hero_keynote.mp4" type="video/mp4"></video>
+        <h1 class="hero-h1">RON SADI<span style="color:var(--accent);">.</span></h1>
+        <div class="hero-sub">INTENT ARCHITECT // ORLANDO STATION</div>
+    </div>
+
+    <!-- LINEAGE -->
+    <section>
+        <span class="label">NODE_01 // THE LINEAGE</span>
+        <div class="grid">
+            <div class="artifact">
+                <div class="artifact-info"><p>SCULLEY X SADI. THE 1984 DNA REANIMATED.</p></div>
+                <div class="img-container"><video autoplay muted loop playsinline><source src="sculley_reanimated.mp4" type="video/mp4"></video></div>
+            </div>
+            <div class="artifact">
+                <div class="artifact-info"><p>PATENT US 11,682,050 B2. ARCHITECTURE OF SOUL.</p></div>
+                <div class="img-container"><img src="patent_doc.jpg" style="filter: invert(1) grayscale(1) contrast(2);"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOUL -->
+    <section>
+        <span class="label">NODE_02 // THE ARCHIVE</span>
+        <div class="grid">
+            <div class="artifact">
+                <div class="artifact-info"><p>COLUMBIA UNIVERSITY ART PROPERTIES.</p></div>
+                <div class="img-container"><img src="columbia_archive.jpg"></div>
+            </div>
+            <div class="artifact">
+                <div class="artifact-info"><p>LEHIGH UNIVERSITY PERMANENT COLLECTION.</p></div>
+                <div class="img-container"><img src="lehigh_archive.jpg"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RAY TERMINAL -->
+    <section class="sonic-terminal" id="sonic">
+        <div class="ray-vid-container" id="ray-container">
+            <video class="ray-vid" id="ray-video" autoplay muted loop playsinline><source src="ray_terminal.mp4" type="video/mp4"></video>
+            <div class="red-glow-overlay"></div>
+        </div>
+        <div class="logo-btn" id="logo-text">DOOR 2</div>
+        <audio id="bg-audio" src="intent_frequency.mp3" loop></audio>
+    </section>
+
+    <footer>
+        <div>WIZARDS ONLY.</div>
+        <div>ORLANDO // 2026</div>
+        <div>RESPECTFULLY.</div>
+    </footer>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+
+        const btn = document.getElementById('sonic');
+        const container = document.getElementById('ray-container');
+        const audio = document.getElementById('bg-audio');
+        const text = document.getElementById('logo-text');
+
+        btn.onclick = () => {
+            if (audio.paused) { 
+                audio.play(); container.classList.add('is-active'); text.innerText = "ACTIVE";
+            } else { 
+                audio.pause(); container.classList.remove('is-active'); text.innerText = "DOOR 2";
+            }
+        }
+    </script>
+</body>
+</html>
