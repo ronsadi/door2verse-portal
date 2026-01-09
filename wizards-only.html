@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SADI // CULTURAL AUDIT V1</title>
-    <!-- PATH TO YOUR FOLDER AS SEEN IN WINDOWS SCREENSHOT -->
-    <script src="./Corporate Culture Analysis_ The Yeezy Lexicon_files/chart.js.download"></script>
+    <!-- RELIABLE CDN ENGINE - SVP STANDARD -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@700&display=swap');
         body { background: #050505; color: #f2f2f2; font-family: 'Inter', sans-serif; overflow-x: hidden; text-transform: uppercase; }
@@ -13,7 +13,7 @@
         .back-btn { color: #ff0000; text-decoration: none; font-size: 0.8rem; letter-spacing: 5px; margin-bottom: 50px; display: block; }
         h1 { font-family: 'Space Grotesk', sans-serif; font-size: 4vw; margin-bottom: 40px; border-bottom: 2px solid #1a1a1a; padding-bottom: 20px; line-height: 0.9; }
         
-        .chart-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 60px; margin-top: 100px; align-items: center; }
+        .chart-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 60px; margin-top: 100px; align-items: center; }
         .chart-container { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; position: relative; height: 500px; }
         
         .info-card { padding: 40px; border-left: 4px solid #ff0000; background: #080808; }
@@ -21,6 +21,7 @@
         .info-card p { color: #888; text-transform: none; line-height: 1.6; }
 
         footer { margin-top: 100px; padding-bottom: 100px; color: #333; font-size: 0.7rem; }
+        @media (max-width: 768px) { h1 { font-size: 8vw; } .chart-container { height: 350px; padding: 10px; } }
     </style>
 </head>
 <body>
@@ -72,16 +73,16 @@
                     maintainAspectRatio: false,
                     scales: {
                         r: {
-                            angleLines: { color: '#1a1a1a' },
-                            grid: { color: '#1a1a1a' },
-                            pointLabels: { color: '#888', font: { size: 10 } },
+                            angleLines: { color: '#333' },
+                            grid: { color: '#333' },
+                            pointLabels: { color: '#888', font: { size: 11, weight: 'bold' } },
                             ticks: { display: false },
                             suggestedMin: 0,
                             suggestedMax: 10
                         }
                     },
                     plugins: {
-                        legend: { labels: { color: '#fff', font: { family: 'Helvetica Bold' } } }
+                        legend: { position: 'bottom', labels: { color: '#fff', font: { family: 'Helvetica Bold', size: 12 } } }
                     }
                 }
             });
