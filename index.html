@@ -13,6 +13,10 @@
         .crt::after { content: " "; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%); background-size: 100% 3px; z-index: 10001; pointer-events: none; }
         #cursor { width: 12px; height: 12px; background: var(--accent); position: fixed; pointer-events: none; z-index: 99999; border-radius: 50%; box-shadow: 0 0 15px var(--accent); mix-blend-mode: difference; transition: transform 0.05s ease; }
         @media (pointer: coarse) { #cursor { display: none; } }
+        .snapshot * { animation: none !important; transition: none !important; }
+        .snapshot #cursor { display: none !important; }
+        .snapshot video { visibility: hidden; }
+        .snapshot .red-reflection { opacity: 0 !important; }
         .hero { height: 100svh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; border-bottom: 2px solid #111; overflow: hidden; }
         .hero-vid { position: absolute; top: 0; left: 0; width: 100%; height: 112%; object-fit: cover; object-position: center top; opacity: 0.2; filter: grayscale(1) contrast(180%); transform: translateY(-4%); }
         .hero-h1 { font-size: clamp(4rem, 15vw, 15rem); letter-spacing: -0.06em; z-index: 10; font-weight: 900; text-align: center; }
@@ -89,8 +93,14 @@
         <div class="footer-core">ORLANDO STATION // <a href="https://www.linkedin.com/in/ron-sadi" target="_blank">RON SADI</a></div>
     </footer>
     <script>
+        const isSnapshot = new URLSearchParams(window.location.search).has('snapshot');
+        if (isSnapshot) {
+            document.body.classList.add('snapshot');
+        }
         const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+        if (!isSnapshot) {
+            document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+        }
         const btn = document.getElementById('sonic');
         const container = document.getElementById('ray-container');
         const audio = document.getElementById('bg-audio');
@@ -100,14 +110,20 @@
             if (audio.paused) { audio.play(); container.classList.add('is-active'); text.innerText = "ACTIVE"; uplink.style.display = "block"; }
             else { audio.pause(); container.classList.remove('is-active'); text.innerText = "DOOR 2"; uplink.style.display = "none"; }
         };
-        let timer;
-        const resetTimer = () => {
-            document.querySelectorAll('footer a').forEach(el => el.classList.remove('ghost-active'));
-            clearTimeout(timer);
-            timer = setTimeout(() => { document.querySelectorAll('footer a').forEach(el => el.classList.add('ghost-active')); }, 10000);
-        };
-        document.onmousemove = resetTimer;
-        document.onscroll = resetTimer;
+        if (isSnapshot) {
+            document.querySelectorAll('video, audio').forEach(el => {
+                try { el.pause(); } catch (e) {}
+            });
+        } else {
+            let timer;
+            const resetTimer = () => {
+                document.querySelectorAll('footer a').forEach(el => el.classList.remove('ghost-active'));
+                clearTimeout(timer);
+                timer = setTimeout(() => { document.querySelectorAll('footer a').forEach(el => el.classList.add('ghost-active')); }, 10000);
+            };
+            document.onmousemove = resetTimer;
+            document.onscroll = resetTimer;
+        }
     </script>
 </body>
 </html>
