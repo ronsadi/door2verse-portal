@@ -5,6 +5,8 @@ param(
     [switch]$UpdateBaseline
 )
 
+$ErrorActionPreference = 'Stop'
+
 $root = Split-Path -Parent $PSScriptRoot
 $previewDir = Join-Path $root "previews"
 $null = New-Item -ItemType Directory -Force -Path $previewDir
@@ -51,25 +53,32 @@ if ($UpdateBaseline) {
     exit 0
 }
 
-if (Test-Path $baseline) {
-    $magick = (Get-Command magick -ErrorAction SilentlyContinue).Source
-    if ($magick) {
-        $metric = & $magick compare -metric AE $baseline $shot $diff 2>&1
-        Write-Host "Pixel diff (AE): $metric"
-        Write-Host "Diff image: $diff"
+if (-not (Test-Path $baseline)) {
+    Write-Host "No baseline found. Run with -UpdateBaseline to set one." -ForegroundColor Yellow
+    Write-Host "Current screenshot: $shot"
+    exit 1
+}
+
+$magick = (Get-Command magick -ErrorAction SilentlyContinue).Source
+if ($magick) {
+    $metric = & $magick compare -metric AE $baseline $shot $diff 2>&1
+    if ($LASTEXITCODE -eq 0 -and ([int64]$metric -eq 0)) {
+        Write-Host "No pixel difference." -ForegroundColor Green
         exit 0
     } else {
-        $baseHash = (Get-FileHash $baseline).Hash
-        $shotHash = (Get-FileHash $shot).Hash
-        if ($baseHash -eq $shotHash) {
-            Write-Host "No change detected (hash match)."
-        } else {
-            Write-Host "Change detected (hash mismatch)."
-        }
-        Write-Host "Current: $shot"
-        exit 0
+        Write-Host "Pixel diff (AE): $metric" -ForegroundColor Red
+        Write-Host "Diff image: $diff"
+        exit 1
     }
 }
 
-Write-Host "No baseline found. Run with -UpdateBaseline to set one."
+$baseHash = (Get-FileHash $baseline).Hash
+$shotHash = (Get-FileHash $shot).Hash
+if ($baseHash -eq $shotHash) {
+    Write-Host "No change detected (hash match)." -ForegroundColor Green
+    exit 0
+}
+
+Write-Host "Change detected (hash mismatch)." -ForegroundColor Red
 Write-Host "Current: $shot"
+exit 1
