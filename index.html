@@ -36,7 +36,8 @@
         .is-active .logo-btn { border-color: var(--accent); color: var(--accent); }
         .direct-dial { font-size: 1.4rem; color: var(--accent); margin-top: 25px; letter-spacing: 5px; font-weight: 900; display: none; animation: blink 0.5s infinite; text-decoration: none; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } }
-        footer { padding: 80px 8%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; font-size: 0.65rem; color: #444; border-top: 1px solid #111; }
+        footer { padding: 80px 8%; display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 0.65rem; color: #444; border-top: 1px solid #111; text-align: center; }
+        .footer-core { letter-spacing: 2px; }
         footer a { color: #f2f2f2; text-decoration: none; border-bottom: 1px solid var(--dim); transition: 0.3s; font-weight: bold; }
         footer a:hover, .ghost-active { color: var(--accent) !important; border-color: var(--accent) !important; }
         @media (max-width: 768px) { .hero-h1 { font-size: 24vw !important; } .grid { grid-template-columns: 1fr; } }
@@ -85,7 +86,7 @@
         <audio id="bg-audio" src="intent_frequency.mp3" loop></audio>
     </section>
     <footer>
-        <div>ORLANDO STATION // <a href="https://www.linkedin.com/in/ron-sadi" target="_blank">RON SADI</a></div>
+        <div class="footer-core">ORLANDO STATION // <a href="https://www.linkedin.com/in/ron-sadi" target="_blank">RON SADI</a></div>
     </footer>
     <script>
         const cursor = document.getElementById('cursor');
